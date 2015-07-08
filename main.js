@@ -1,18 +1,21 @@
 var pre = 'https://jsonp.afeld.me/?url=';
 $.get(pre + "https://api.sportradar.us/nba-t3/games/2014/reg/schedule.json?api_key=xama6vm9k7758y5fuqfkvbw6", function(data){
 
-  var array = [];
-  for (var i = 0; i < 64; i++) {
-    var team = {
-      id: data.games[i].home.id,
-      team: data.games[i].home.name
-    };
-    //console.log(team);
-    array.push(data.games[i].home);
-    console.log(array);
+  var idArray = []; 
+  $.each(data.games, function(index, value){
+    var array = data.games[index].home;
+    $.each(array, function(index, value){
+       if (array[index].length === 36) {
+         var id = array[index];
+         idArray.push(id);
+       }
 
-    .uniq(array);
-  }
+    })
+    //console.log(idArray); 
+    var newArr = _.uniq(idArray);
+    console.log(newArr);
+    
+  })  
 });
 
 //gets and appends Indiana Pacers
