@@ -30,30 +30,33 @@ function getAndSort(data) {
         return x.id;
       })
       unique.forEach(function(obj, team){
-        $(".teams").append("<button>" + obj.team + "</button>");
+        var id = obj.id;        
+        $(".teams").append("<button id=" + id  + ">" + obj.team + "</button>");
+        //console.log(obj.id);
+        $(".teams button[id]").on("click", function(){
+          var el = $(this).attr("id");
+          if (el === id) {
+            getData(id);
+          }
+
+        });
+        
       })
-      console.log(unique);
 }
 
+function getData(id) {
+  $.ajax({
+    url: pre + 'https://api.sportradar.us/nba-t3/teams/' + id + '/profile.json?api_key=xama6vm9k7758y5fuqfkvbw6',
+    jsonp: 'callback',
+    datatype: 'jsonp',
+    data: {
+      format: 'json'
+    }, 
+    success: function(data) {
+      var team = data.players;
+      console.log(team);
+    }
+  })
+}
 
-/*for (var i = 0; i < 30; i++) {
-        $.ajax({
-          url: pre + 'https://api.sportradar.us/nba-t3/teams/' + unique[i] + '/profile.json?api_key=xama6vm9k7758y5fuqfkvbw6',
-          jsonp: 'callback',
-          datatype: 'jsonp',
-          data: {
-            format: 'json'
-          }, 
-          success: function(data) {
-            var team = data.players;
-            console.log(team);
-
-          for (var i = 0; i < team.length; i++) {
-            $("body").append(team[i].full_name);
-          }
-        }      
-        }); 
-
-      }  
-
-   */     
+    
