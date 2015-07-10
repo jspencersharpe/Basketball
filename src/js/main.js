@@ -26,7 +26,13 @@ function getAndSort(data) {
         }
         objs.push(newTeam);
       })    
-      console.log(objs);
+      var unique = _.uniq(objs, function(x){
+        return x.id;
+      })
+      unique.forEach(function(obj, team){
+        $(".teams").append("<button>" + obj.team + "</button>");
+      })
+      console.log(unique);
 }
 
 
