@@ -11,8 +11,8 @@ $.ajax({
   success: function(data){
     getAndSort(data);
   }, 
-  error: function(err) {
-    //console.log(err, "error getting data");
+  error: function(err, data) {
+    console.log(err, "error getting data");
   }
 });
 
@@ -32,16 +32,18 @@ function getAndSort(data) {
       unique.forEach(function(obj, team){
         var id = obj.id;        
         $(".teams").append("<button id=" + id  + ">" + obj.team + "</button>");
-        //console.log(obj.id);
         $(".teams button[id]").on("click", function(){
           var el = $(this).attr("id");
           if (el === id) {
             getData(id);
           }
-
         });
         
       })
+}
+
+function append(list, obj) {
+  list.append("<li>" + obj.full_name + ", " + obj.birth_place + "</li>")
 }
 
 function getData(id) {
@@ -54,7 +56,12 @@ function getData(id) {
     }, 
     success: function(data) {
       var team = data.players;
-      console.log(team);
+      //console.log(team);
+      team.forEach(function(obj, player) {
+        console.log(obj);
+        var list = $('.list');
+        append(list, obj);
+      });     
     }
   })
 }
