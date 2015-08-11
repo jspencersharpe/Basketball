@@ -96,15 +96,24 @@ module.exports = function(grunt) {
         ]
       }
     },
-		watch: {
-      }, 
-
-      files: [
-        'public/style/style.css',
-        'public/js/**/*.js',
-        'public/**/*.html'
-      ]
-	});
+    watch: {
+        livereload: {
+           options: {
+            livereload: true
+           },
+           files: [
+            "src/style/main.css",
+            "src/js/main.js",
+            "src/index.html"
+            ]
+          }, 
+         sass: {
+          files: ["src/sass/main.scss"],
+          tasks: ["sass:dev", "autoprefixer"]
+         }    
+      }
+		
+    });
   
 	grunt.registerTask('default',['watch']);
   grunt.registerTask('build', [
