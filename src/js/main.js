@@ -1,20 +1,27 @@
 var pre = 'https://jsonp.afeld.me/?url=';
 var teams = 'https://api.sportradar.us/nba-t3/games/2014/reg/schedule.json?api_key=xama6vm9k7758y5fuqfkvbw6';
 
-$.ajax({
-  url: pre + teams,
-  jsonp: 'callback',
-  datatype: 'jsonp',
-  data: {
-    format: 'json'
-  }, 
-  success: function(data){
-    getAndSort(data);
-  }, 
-  error: function(err, data) {
-    console.log(err, "error getting data");
-  }
-});
+$(document).ready(function(){
+  getTeams();
+})
+
+function getTeams() {
+  $.ajax({
+    url: pre + teams,
+    jsonp: 'callback',
+    datatype: 'jsonp',
+    data: {
+      format: 'json'
+    }, 
+    success: function(data){
+      getAndSort(data);
+      console.log(data);
+    }, 
+    error: function(err, data) {
+      console.log(err, "error getting data");
+    }
+  }); 
+}
 
 function getAndSort(data) {
   var objs = [];      
@@ -30,16 +37,17 @@ function getAndSort(data) {
         return x.id;
       })
       unique.forEach(function(obj, team){
-        var id = obj.id;        
+        var id = obj.id;       
         $(".teams").append("<button id=" + id  + ">" + obj.team + "</button>");
         $(".teams button[id]").on("click", function(){
           var el = $(this).attr("id");
           if (el === id) {
+            $(".list").append("<h1>" + obj.team + "</h1>");
             getData(id);
           }
         });
-        
       })
+      console.log(unique);
 }
 
 function append(list, obj) {
@@ -57,9 +65,9 @@ function getData(id) {
     success: function(data) {
       var team = data.players;
       //console.log(team);
+      var list = $('.list');      
       team.forEach(function(obj, player) {
         console.log(obj);
-        var list = $('.list');
         append(list, obj);
       });     
     }
